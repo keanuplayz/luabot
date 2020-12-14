@@ -59,6 +59,15 @@ client:on("messageCreate", function(message)
 		command.exec(message) -- ...run the exec function in the command.
 	end
 
+	if args[1] == prefix.."help" then -- displat all the commands within the table
+		local output = {}
+		for word, tbl in pairs(commands) do
+			table.insert(output, "Command: " .. word .. "\nDescription: " .. tbl.description)
+		end
+
+		message:reply(table.concat(output, '\n\n'))
+	end
+
 end)
 
 client:run('Bot '.. dotenv.TOKEN) -- login
