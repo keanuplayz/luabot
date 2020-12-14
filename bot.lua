@@ -22,6 +22,24 @@ local commands = {
 		exec = function(message)
 			message.channel:send('Pong!')
 		end
+	},
+	[prefix .. 'owner'] = {
+		description = 'Checks if you are the bot owner.',
+		exec = function(message)
+			if message.author == client.owner then
+				message:reply('You are the bot owner.')
+			else
+				message:reply('You are not the bot owner.')
+			end
+		end
+	},
+	[prefix .. 'say'] = {
+		description = 'Repeats your message.',
+		exec = function(message)
+			local args = message.content:split(' ')
+			table.remove(args, 1)
+			message:reply(table.concat(args, ' '))
+		end
 	}
 }
 
