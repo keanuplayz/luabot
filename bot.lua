@@ -25,6 +25,14 @@ client:on("messageCreate", function(message)
 		message:reply(table.concat(args, ' '))
 	end
 
+	if content == 'l!owner' then
+		if message.author == client.owner then
+			message.channel:send('You are the owner.')
+		else
+			message.channel:send('You are not the owner.')
+		end
+	end
+
 end)
 
 client:run("Bot BOT_TOKEN") -- login
