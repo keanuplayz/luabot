@@ -51,6 +51,9 @@ client:on("messageCreate", function(message)
 
 	local args = message.content:split(' ')
 
+	if message.author == client.user then return end
+	if message.author.bot == true then return end
+
 	local command = commands[args[1]]
 	if command then -- If the command exists within the table...
 		command.exec(message) -- ...run the exec function in the command.
