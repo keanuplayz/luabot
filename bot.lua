@@ -15,32 +15,27 @@ while true do
 end
 fd:close()
 
+local prefix = 'l!'
+local commands = {
+	[prefix .. 'ping'] = {
+		description = 'Answers with pong.',
+		exec = function(message)
+			message.channel:send('Pong!')
+		end
+	}
+}
+
 client:on("ready", function() -- when bot sends ready event
 	p(string.format('Logged in as %s', client.user.username))
 end)
 
 client:on("messageCreate", function(message)
 
-	local content = message.content
 	local args = message.content:split(' ')
 
-	if content == "l!ping" then
-		message:reply("Pong!")
-	elseif content == "l!pong" then
-		message:reply("Ping!")
-	end
-
-	if content == 'l!say' then
-		table.remove(args, 1) -- Remove l!say from args
-		message:reply(table.concat(args, ' '))
-	end
-
-	if content == 'l!owner' then
-		if message.author == client.owner then
-			message.channel:send('You are the owner.')
-		else
-			message.channel:send('You are not the owner.')
-		end
+	local command = commands[args[1]]
+	if command then -- If the command exists within the table...
+		command.exec(message) -- ...run the exec function in the command.
 	end
 
 end)
