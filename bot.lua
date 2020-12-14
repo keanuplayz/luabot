@@ -5,6 +5,16 @@ local client = discordia.Client {
 }
 discordia.extensions() -- Load useful extensions
 
+local dotenv = {} -- Create empty table for dotenv variables
+local fd = io.open('.env', 'r')
+while true do
+	local line = fd:read('*l') -- read all lines
+	if not line then break end
+	local var, data = line:match('^([^=]+)=(.*)$')
+	if var then dotenv[var] = data end -- add all variables to the dotenv table
+end
+fd:close()
+
 client:on("ready", function() -- when bot sends ready event
 	p(string.format('Logged in as %s', client.user.username))
 end)
@@ -35,4 +45,4 @@ client:on("messageCreate", function(message)
 
 end)
 
-client:run("Bot BOT_TOKEN") -- login
+client:run('Bot '.. dotenv.TOKEN) -- login
