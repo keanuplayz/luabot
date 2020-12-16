@@ -53,11 +53,21 @@ local commands = { -- table with all commands
   				color = "ff4040"
 			}
 
-			local embed = parse_embed_data(embedStr, defaults)
+			local parsedembed = parse_embed_data(embedStr, defaults)
 
-			for key, val in pairs(embed) do
+			print(parsedembed.title)
+
+			for key, val in pairs(parsedembed) do
   				print(key, "=", val)
 			end
+
+			message:reply {
+				-- https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
+				embed = {
+					title = parsedembed.title,
+					description = parsedembed.description
+				}
+			}
 		end
 	}
 }
