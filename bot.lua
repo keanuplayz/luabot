@@ -5,6 +5,8 @@ local client = discordia.Client {
 }
 discordia.extensions() -- Load useful extensions
 
+local util = require("lib.util")
+
 local dotenv = {} -- Create empty table for dotenv variables
 local fd = io.open('.env', 'r')
 while true do
@@ -16,7 +18,7 @@ end
 fd:close()
 
 local prefix = 'l!'
-local commands = {
+local commands = { -- table with all commands
 	[prefix .. 'ping'] = {
 		description = 'Answers with pong.',
 		exec = function(message)
@@ -40,6 +42,23 @@ local commands = {
 			table.remove(args, 1)
 			message:reply(table.concat(args, ' '))
 		end
+	},
+	[prefix .. 'embed'] = {
+		description = 'Displays an embed.',
+		exec = function (message)
+			local args = message.content:split(' ')
+			table.remove(args, 1)
+			local embedStr = table.concat(args, ' ')
+			local defaults = {
+  				color = "ff4040"
+			}
+
+			local embed = parse_embed_data(embedStr, defaults)
+
+			for key, val in pairs(embed) do
+  				print(key, "=", val)
+			end
+		end
 	}
 }
 
@@ -59,7 +78,7 @@ client:on("messageCreate", function(message)
 		command.exec(message) -- ...run the exec function in the command.
 	end
 
-	if args[1] == prefix.."help" then -- displat all the commands within the table
+	if args[1] == prefix.."help" then -- display all the commands within the table
 		local output = {}
 		for word, tbl in pairs(commands) do
 			table.insert(output, "Command: " .. word .. "\nDescription: " .. tbl.description)
