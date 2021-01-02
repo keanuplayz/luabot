@@ -21,7 +21,7 @@ function parse_embed_data(data, defaults)
         embed[key] = val
       end
   end
-    
+
   for kvp in string.gmatch(data, "[^|]+") do
       local key, value = string.match(kvp, "^%s*(%S+)%s*=%s*(.-)%s*$")
       if key and value then
@@ -29,6 +29,5 @@ function parse_embed_data(data, defaults)
         embed[key] = value
       end
   end
-    
   return embed
 end
